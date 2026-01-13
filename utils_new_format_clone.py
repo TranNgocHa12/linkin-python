@@ -824,60 +824,51 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 				mess_sent = "message sent by AdminAccount"
 				edit_contact(access_token = access_token, contact_id = contact_info["data"] , title = hirer_title, name = hirer_name, email = hirer_email, phone= hirer_phone, des = request_note_str, link = contact_info_link, account_id= company_id)
 		else:
-			company_people_url = "/people".join(company_url.rsplit("/life", 1))
-			driver.execute_script("window.open('');")
-			company_people_window = driver.window_handles[3]
-			driver.switch_to.window(company_people_window)
-			driver.get(company_people_url)
-			people_name_first_name = ""
-			time.sleep(8)
-			people_div = driver.find_element(By.CLASS_NAME,"org-people-profile-card__card-spacing")
-			people_div_content = people_div.find_element(By.CLASS_NAME,"scaffold-finite-scroll__content")
-			people_div_content_ul = people_div_content.find_element(By.TAG_NAME,"ul")
-			people_div_content_li = people_div_content_ul.find_elements(By.TAG_NAME,"li")
-			breaker = False
-			for option_li in people_div_content_li:
-				if (breaker == False):
-					try:
-						option_li_title_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__subtitle")
-						option_title_div = option_li_title_div.find_element(By.CLASS_NAME,"lt-line-clamp--multi-line")
-						people_title_origin = option_title_div.text
-						people_title = [item.lower() for item in people_title_origin.split()]
-						title_list =["cto","chief technology officer","ceo","chief executive officer","founder","head of technical","project manager","hr","talent acquisition","project owner"]
-						for each_title in title_list:
-							if each_title in people_title:
-								profile_click_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__image")
-								people_link = profile_click_div.find_element(By.TAG_NAME,"a").get_attribute("href")
-								hirer_link = people_link
-								people_name_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__title")
-								people_name_line = people_name_div.find_element(By.CLASS_NAME,"lt-line-clamp--single-line")
-								people_name = people_name_line.text
-								people_name_split = people_name.split()
-								jj = 0
-								while(jj < len(people_name_split) and people_name_split[jj].isalpha() == False):
-									jj = jj + 1
-								if(jj < len(people_name_split)):
-									people_name_first_name = people_name_split[jj]
-								people_info = check_contact(people_name)
-								if(people_info["data"] == ""):
-									print("here2")
-									driver.get(people_link)
-									request_note_str = request_note_str + "connect by Huong" 
-									mess_sent = "message sent by AdminAccount"
-									add_contact(access_token = access_token,title = people_title_origin , name = people_name, email = "", phone = "", des = request_note_str, link = people_link, account_id= company_id)
+			if(company_url != ""):
+				company_people_url = "/people".join(company_url.rsplit("/life", 1))
+				driver.execute_script("window.open('');")
+				company_people_window = driver.window_handles[3]
+				driver.switch_to.window(company_people_window)
+				driver.get(company_people_url)
+				people_name_first_name = ""
+				time.sleep(8)
+				people_div = driver.find_element(By.CLASS_NAME,"org-people-profile-card__card-spacing")
+				people_div_content = people_div.find_element(By.CLASS_NAME,"scaffold-finite-scroll__content")
+				people_div_content_ul = people_div_content.find_element(By.TAG_NAME,"ul")
+				people_div_content_li = people_div_content_ul.find_elements(By.TAG_NAME,"li")
+				breaker = False
+				for option_li in people_div_content_li:
+					if (breaker == False):
+						try:
+							option_li_title_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__subtitle")
+							option_title_div = option_li_title_div.find_element(By.CLASS_NAME,"lt-line-clamp--multi-line")
+							people_title_origin = option_title_div.text
+							people_title = [item.lower() for item in people_title_origin.split()]
+							title_list =["cto","chief technology officer","ceo","chief executive officer","founder","head of technical","project manager","hr","talent acquisition","project owner"]
+							for each_title in title_list:
+								if each_title in people_title:
+									profile_click_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__image")
+									people_link = profile_click_div.find_element(By.TAG_NAME,"a").get_attribute("href")
+									hirer_link = people_link
+									people_name_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__title")
+									people_name_line = people_name_div.find_element(By.CLASS_NAME,"lt-line-clamp--single-line")
+									people_name = people_name_line.text
+									people_name_split = people_name.split()
+									jj = 0
+									while(jj < len(people_name_split) and people_name_split[jj].isalpha() == False):
+										jj = jj + 1
+									if(jj < len(people_name_split)):
+										people_name_first_name = people_name_split[jj]
 									people_info = check_contact(people_name)
 									if(people_info["data"] == ""):
 										print("here2")
 										driver.get(people_link)
-										request_note_str = request_note_str + "connect by Tien" 
+										request_note_str = request_note_str + "connect by Ha" 
 										mess_sent = "message sent by AdminAccount"
 										add_contact(access_token = access_token,title = people_title_origin , name = people_name, email = "", phone = "", des = request_note_str, link = people_link, account_id= company_id)
 										people_info = check_contact(people_name)
 										contact_id = people_info["data"]
 										breaker = True
-										request_note_str = people_info["des"] + "\nconnect by Huong" 
-										mess_sent = "message sent by AdminAccount"
-										edit_contact(access_token = access_token, contact_id = people_info["data"] , title = people_title_origin, name = people_name, email = "", phone= "", des = request_note_str, link = people_link, account_id= company_id)
 										break
 									else:
 										if people_info["des"] is not None and ("message" in people_info["des"].lower() or "connect" in people_info["des"].lower()):
@@ -889,15 +880,15 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 											time.sleep(6)
 											contact_id = people_info["data"]
 											breaker = True
-											request_note_str = people_info["des"] + "\nconnect by Tien" 
+											request_note_str = people_info["des"] + "\nconnect by Huong" 
 											mess_sent = "message sent by AdminAccount"
 											edit_contact(access_token = access_token, contact_id = people_info["data"] , title = people_title_origin, name = people_name, email = "", phone= "", des = request_note_str, link = people_link, account_id= company_id)
 											break
-					except Exception as error:
-						print("Seventh ex: ", error)
-						continue
-				else:
-					break
+						except Exception as error:
+							print("Seventh ex: ", error)
+							continue
+					else:
+						break
 				lead_info = check_lead_existed(current_job_title, company_name, people_name)
 	except NoSuchElementException as error:
 		print("Second ex: " , error)
