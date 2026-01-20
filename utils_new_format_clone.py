@@ -514,6 +514,18 @@ def get_num_mess_sent_lead(access_token):
 		json_object = data.json()
 		return json_object["data"]
 
+def get_lead_count_one_year(company_name):
+	headers = {'Content-Type': "application/json", 'Accept': "application/json"}
+	check_api = "http://68.183.189.171:9999/getLeadCountByCompany"
+	jsondata = {"name":company_name}
+	data = requests.get(check_api,json=jsondata,headers=headers)
+	if data.status_code != 200:
+		print(data.status_code)
+		print(data.reason)
+	else:
+		json_object = data.json()
+		return json_object
+
 def check_email_expired(email):
 	headers = {'Content-Type': "application/json", 'Accept': "application/json"}
 	check_api = "http://68.183.189.171:9999/getactivelead"
@@ -889,7 +901,23 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 							continue
 					else:
 						break
-				
+				if(people_name == ""):
+					lead_count_one_year = get_lead_count_one_year(company_name)
+					if(lead_count_one_year > 3):
+						if(company_url != ""):
+							driver.switch_to.window(company_window)
+							driver.close()
+							time.sleep(2)
+							driver.switch_to.window(company_people_window)
+							driver.close()
+							time.sleep(2)
+						driver.switch_to.window(job_detail_window)
+						z = random.randint(3,7)
+						time.sleep(z)
+						driver.close()#1 close  job_detail_window
+						time.sleep(1)
+						driver.switch_to.window(root_window)
+						return 
 			lead_info = check_lead_existed(current_job_title, company_name, people_name)
 	except NoSuchElementException as error:
 		print("Second ex: " , error)
