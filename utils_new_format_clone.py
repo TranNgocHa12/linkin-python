@@ -630,10 +630,10 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			if("job poster" in parent_element_text.lower()):
 				hirer_link = element_href
 	try:
-		#current_job_title = driver.find_element(By.CLASS_NAME,"eafe05d6").text  		
-		current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
-		#job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
-		job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
+		current_job_title = driver.find_element(By.CLASS_NAME,"eafe05d6").text  		
+		#current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
+		job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
+		#job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
 		detector = LanguageDetector()
 		title_lan = detector.detect(current_job_title).language
 		detail_lan = detector.detect(job_detail_text).language
@@ -731,7 +731,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			driver.get(hirer_link)
 			z = random.randint(5,10)		
 			#hirer_name = driver.find_element(By.CSS_SELECTOR, '[data-view-name="profile-top-card-verified-badge"]').text
-			hirer_name = driver.find_element(By.CLASS_NAME,"eafe05d6").text	
+			hirer_name = driver.find_element(By.CLASS_NAME,"UhTMnxhsoIuFualmaZbIxTNlsZCBwehXsE").text	
 			lead_info = check_lead_existed(current_job_title, company_name, hirer_name)
 			hirer_name_split = hirer_name.split()
 			ii = 0
@@ -741,8 +741,8 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 				hirer_name_first_name = hirer_name_split[ii]
 			contact_info = check_contact(hirer_name)
 			if(contact_info["data"] == ""):				 
-				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
-				contact_info_link = driver.find_element(By.CLASS_NAME,"d4a25d59").get_attribute("href")
+				contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
+				#contact_info_link = driver.find_element(By.CLASS_NAME,"d4a25d59").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
 				contact_info_list = driver.find_elements(By.CLASS_NAME,"pv-contact-info__contact-type")
@@ -803,8 +803,8 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 					return	
 				elif contact_info["des"] is not None:
 					request_note_str =contact_info["des"] + "\nconnect by Huong" 
-				contact_info_link = driver.find_element(By.CLASS_NAME,"d4a25d59").get_attribute("href")
-				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
+				#contact_info_link = driver.find_element(By.CLASS_NAME,"d4a25d59").get_attribute("href")
+				contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
 				contact_info_list = driver.find_elements(By.CLASS_NAME,"pv-contact-info__contact-type")
@@ -921,6 +921,23 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			lead_info = check_lead_existed(current_job_title, company_name, people_name)
 	except NoSuchElementException as error:
 		print("Second ex: " , error)
+		if(people_name == ""):
+			lead_count_one_year = get_lead_count_one_year(company_name)
+			if(lead_count_one_year > 3):
+				if(company_url != ""):
+					driver.switch_to.window(company_window)
+					driver.close()
+					time.sleep(2)
+					driver.switch_to.window(company_people_window)
+					driver.close()
+					time.sleep(2)
+				driver.switch_to.window(job_detail_window)
+				z = random.randint(3,7)
+				time.sleep(z)
+				driver.close()#1 close  job_detail_window
+				time.sleep(1)
+				driver.switch_to.window(root_window)
+				return 
 		pass
 
 	if(country == "Australia"):
