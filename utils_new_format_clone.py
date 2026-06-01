@@ -630,10 +630,10 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			if("job poster" in parent_element_text.lower()):
 				hirer_link = element_href
 	try:
-		#current_job_title = driver.find_element(By.CLASS_NAME,"_39f29958").text  		
-		current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
-		#job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
-		job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
+		current_job_title = driver.find_element(By.CLASS_NAME,"d66d9a40").text  		
+		#current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
+		job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
+		#job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
 		detector = LanguageDetector()
 		title_lan = detector.detect(current_job_title).language
 		detail_lan = detector.detect(job_detail_text).language
@@ -679,7 +679,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			job_phones = re.findall(r'^(0|(\+64(\s|-)?)){1}(21|22|27){1}(\s|-)?\d{3}(\s|-)?\d{4}$', job_detail_text)
 		else:
 			print("Not interested country")
-   
+		# if(company_url != ""):
 		driver.execute_script("window.open('');")
 		company_window = driver.window_handles[2]
 		driver.switch_to.window(company_window)
@@ -731,7 +731,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			driver.get(hirer_link)
 			z = random.randint(5,10)		
 			#hirer_name = driver.find_element(By.CSS_SELECTOR, '[data-view-name="profile-top-card-verified-badge"]').text
-			hirer_name = driver.find_element(By.CLASS_NAME,"_39f29958").text	
+			hirer_name = driver.find_element(By.CLASS_NAME,"d66d9a40").text	
 			lead_info = check_lead_existed(current_job_title, company_name, hirer_name)
 			hirer_name_split = hirer_name.split()
 			ii = 0
@@ -742,7 +742,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			contact_info = check_contact(hirer_name)
 			if(contact_info is None or contact_info["data"] is None or contact_info["data"] == ""):				 
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_6963cc19").get_attribute("href")
+				contact_info_link = driver.find_element(By.CLASS_NAME,"_044e34b7").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
 				contact_info_list = driver.find_elements(By.CLASS_NAME,"pv-contact-info__contact-type")
@@ -779,7 +779,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 					driver.switch_to.window(root_window)
 					return						
 				print("\n add contact")    
-				request_note_str = "connect by Huong" 
+				request_note_str = "connect by Ha" 
 				mess_sent = "message sent by AdminAccount"
 				add_contact(access_token = access_token,title = hirer_title , name = hirer_name, email = hirer_email, phone = hirer_phone, des = request_note_str, link = contact_info_link, account_id= company_id)
 				contact_info = check_contact(hirer_name)
@@ -802,8 +802,8 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 					driver.switch_to.window(root_window)
 					return	
 				elif contact_info["des"] is not None:
-					request_note_str =contact_info["des"] + "\nconnect by Huong" 
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_6963cc19").get_attribute("href")
+					request_note_str =contact_info["des"] + "\nconnect by Ha" 
+				contact_info_link = driver.find_element(By.CLASS_NAME,"_044e34b7").get_attribute("href")
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
@@ -875,7 +875,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 									if(people_info["data"] == ""):
 										print("here2")
 										driver.get(people_link)
-										request_note_str = request_note_str + "connect by Huong" 
+										request_note_str = request_note_str + "connect by Ha" 
 										mess_sent = "message sent by AdminAccount"
 										add_contact(access_token = access_token,title = people_title_origin , name = people_name, email = "", phone = "", des = request_note_str, link = people_link, account_id= company_id)
 										people_info = check_contact(people_name)
@@ -892,7 +892,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 											time.sleep(6)
 											contact_id = people_info["data"]
 											breaker = True
-											request_note_str = people_info["des"] + "\nconnect by Huong" 
+											request_note_str = people_info["des"] + "\nconnect by Ha" 
 											mess_sent = "message sent by AdminAccount"
 											edit_contact(access_token = access_token, contact_id = people_info["data"] , title = people_title_origin, name = people_name, email = "", phone= "", des = request_note_str, link = people_link, account_id= company_id)
 											break
@@ -1219,15 +1219,21 @@ def get_lk_credentials(path="./lk_credentials.json"):
 	return data
 
 def enter_ids_on_lk_signin(driver, email, password):
-	time.sleep(2)
-	usernameInputElement = driver.find_element(By.ID, "username")
+	time.sleep(3)
+	usernameInputElement = driver.find_elements(By.ID, ":r3:")[-1]
 	usernameInputElement.send_keys(email)
-	passwordInputElement = driver.find_element(By.ID, "password")
+	passwordInputElement = driver.find_elements(By.ID, ":r4:")[-1]
 	passwordInputElement.send_keys(password)
-	submitElement = driver.find_element(
-		By.CSS_SELECTOR,
-		"#organic-div > form > div.login__form_action_container > button",
-	)
+	# usernameInputElement = driver.find_element(By.ID, "username")
+	# usernameInputElement.send_keys(email)
+	# passwordInputElement = driver.find_element(By.ID, "password")
+	# passwordInputElement.send_keys(password)
+	# submitElement = driver.find_element(
+	# 	By.CSS_SELECTOR,
+	# 	"#organic-div > form > div.login__form_action_container > button",
+	# )
+	
+	submitElement = driver.find_elements(By.CLASS_NAME,"e83ce89f")[-1]
 	time.sleep(2)
 	submitElement.click()
 	time.sleep(2)
