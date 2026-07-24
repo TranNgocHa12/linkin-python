@@ -630,7 +630,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			if("job poster" in parent_element_text.lower()):
 				hirer_link = element_href
 	try:
-		current_job_title = driver.find_element(By.CLASS_NAME,"_80e2a3ab").text  		
+		current_job_title = driver.find_element(By.CLASS_NAME,"a803e2f2").text  		
 		#current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
 		job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
 		#job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
@@ -729,9 +729,10 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			contact_window = driver.window_handles[3]
 			driver.switch_to.window(contact_window)
 			driver.get(hirer_link)
-			z = random.randint(5,10)		
+			z = random.randint(5,10)	
+			time.sleep(z)
 			#hirer_name = driver.find_element(By.CSS_SELECTOR, '[data-view-name="profile-top-card-verified-badge"]').text
-			hirer_name = driver.find_element(By.CLASS_NAME,"_80e2a3ab").text	
+			hirer_name = driver.find_element(By.CLASS_NAME,"a803e2f2").text	
 			lead_info = check_lead_existed(current_job_title, company_name, hirer_name)
 			hirer_name_split = hirer_name.split()
 			ii = 0
@@ -742,7 +743,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			contact_info = check_contact(hirer_name)
 			if(contact_info is None or contact_info["data"] is None or contact_info["data"] == ""):				 
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_7764f370").get_attribute("href")
+				contact_info_link = driver.find_element(By.CLASS_NAME,"a2b34423").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
 				contact_info_list = driver.find_elements(By.CLASS_NAME,"pv-contact-info__contact-type")
@@ -803,7 +804,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 					return	
 				elif contact_info["des"] is not None:
 					request_note_str =contact_info["des"] + "\nconnect by Huong" 
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_7764f370").get_attribute("href")
+				contact_info_link = driver.find_element(By.CLASS_NAME,"a2b34423").get_attribute("href")
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
@@ -1219,7 +1220,7 @@ def get_lk_credentials(path="./lk_credentials.json"):
 	return data
 
 def enter_ids_on_lk_signin(driver, email, password):
-	time.sleep(10)
+	time.sleep(30)
  
 	# usernameInputElement = driver.find_element(By.ID, "username")
 	# usernameInputElement.send_keys(email)
@@ -1230,11 +1231,15 @@ def enter_ids_on_lk_signin(driver, email, password):
 	# 	"#organic-div > form > div.login__form_action_container > button",
 	# )
 	
-	usernameInputElement = driver.find_elements(By.ID, "«r3»")[-1]
+	# usernameInputElement = driver.find_elements(By.ID, "«r3»")[-1]
+	# usernameInputElement.send_keys(email)
+	# passwordInputElement = driver.find_elements(By.ID, "«r4»")[-1]
+	# passwordInputElement.send_keys(password)
+	usernameInputElement = driver.find_elements(By.ID, "«Rsvvl3ksopa55j6»")[-1]
 	usernameInputElement.send_keys(email)
-	passwordInputElement = driver.find_elements(By.ID, "«r4»")[-1]
+	passwordInputElement = driver.find_elements(By.ID, "«R5fvl3ksopa55j6»")[-1]
 	passwordInputElement.send_keys(password)
-	submitElement = driver.find_elements(By.CLASS_NAME,"_7a25bb80")[-1]
+	submitElement = driver.find_elements(By.CLASS_NAME,"_20b1ddc1")[-1]
  
 	# usernameInputElement = driver.find_element(By.ID, "session_key")
 	# # print(len(usernameInputElement))
