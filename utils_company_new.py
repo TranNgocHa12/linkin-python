@@ -630,7 +630,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			if("job poster" in parent_element_text.lower()):
 				hirer_link = element_href
 	try:
-		current_job_title = driver.find_element(By.CLASS_NAME,"de29af04").text  	#2nd element
+		current_job_title = driver.find_element(By.CLASS_NAME,"de29af04").text  # 2nd element		
 		#current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
 		job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
 		#job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
@@ -699,8 +699,9 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			time.sleep(1)
 			driver.switch_to.window(root_window)
 			return 
-		else:		
-			company_name = driver.find_element(By.CLASS_NAME,"org-top-card-summary__title").text
+		else:
+			company_name = driver.find_element(By.CLASS_NAME,"de29af04").text
+			# company_name = driver.find_element(By.CLASS_NAME,"org-top-card-summary__title").text
 			company_info = check_company_existed(company_name)
 			company_id = company_info["data"]
 			company_desc = company_info["des"]
@@ -732,7 +733,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			z = random.randint(5,10)	
 			time.sleep(z)
 			#hirer_name = driver.find_element(By.CSS_SELECTOR, '[data-view-name="profile-top-card-verified-badge"]').text
-			hirer_name = driver.find_element(By.CLASS_NAME,"de29af04").text	   #2nd element
+			hirer_name = driver.find_element(By.CLASS_NAME,"de29af04").text	   # 2nd element	
 			lead_info = check_lead_existed(current_job_title, company_name, hirer_name)
 			hirer_name_split = hirer_name.split()
 			ii = 0
@@ -804,7 +805,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 					return	
 				elif contact_info["des"] is not None:
 					request_note_str =contact_info["des"] + "\nconnect by Huong" 
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_693572fb").get_attribute("href")    #2nd element
+				contact_info_link = driver.find_element(By.CLASS_NAME,"_693572fb").get_attribute("href")  #2nd element
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
@@ -845,27 +846,34 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 				driver.get(company_people_url)
 				people_name_first_name = ""
 				time.sleep(8)
-				people_div = driver.find_element(By.CLASS_NAME,"org-people-profile-card__card-spacing")
-				people_div_content = people_div.find_element(By.CLASS_NAME,"scaffold-finite-scroll__content")
-				people_div_content_ul = people_div_content.find_element(By.TAG_NAME,"ul")
-				people_div_content_li = people_div_content_ul.find_elements(By.TAG_NAME,"li")
+				people_div = driver.find_elements(By.CLASS_NAME,"e7f4b470")[1]   #first element
+				people_div_content_li = people_div.find_elements(By.CSS_SELECTOR, "[role='listitem']")
+				print(len(people_div_content_li))
+				# people_div = driver.find_element(By.CLASS_NAME,"org-people-profile-card__card-spacing")				
+				# people_div_content = people_div.find_element(By.CLASS_NAME,"scaffold-finite-scroll__content")
+				# people_div_content_ul = people_div_content.find_element(By.TAG_NAME,"ul")
+				# people_div_content_li = people_div_content_ul.find_elements(By.TAG_NAME,"li")
 				breaker = False
 				for option_li in people_div_content_li:
 					if (breaker == False):
-						try:
-							option_li_title_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__subtitle")
-							option_title_div = option_li_title_div.find_element(By.CLASS_NAME,"lt-line-clamp--multi-line")
-							people_title_origin = option_title_div.text
+						try:					 
+							# option_li_title_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__subtitle")
+							# option_title_div = option_li_title_div.find_element(By.CLASS_NAME,"lt-line-clamp--multi-line")
+							# people_title_origin = option_title_div.text
+							people_title_origin = option_li.find_element(By.CLASS_NAME,"b9c6bdb2").text  #3rd element in p tag in title
+							print(people_title_origin)
 							people_title = [item.lower() for item in people_title_origin.split()]
 							title_list =["cto","chief technology officer","ceo","chief executive officer","founder","head of technical","project manager","hr","talent acquisition","project owner"]
 							for each_title in title_list:
 								if each_title in people_title:
-									profile_click_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__image")
-									people_link = profile_click_div.find_element(By.TAG_NAME,"a").get_attribute("href")
-									hirer_link = people_link
-									people_name_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__title")
-									people_name_line = people_name_div.find_element(By.CLASS_NAME,"lt-line-clamp--single-line")
-									people_name = people_name_line.text
+									# profile_click_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__image")
+									# people_link = profile_click_div.find_element(By.TAG_NAME,"a").get_attribute("href")
+									# hirer_link = people_link
+									# people_name_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__title")
+									# people_name_line = people_name_div.find_element(By.CLASS_NAME,"lt-line-clamp--single-line")
+									# people_name = people_name_line.text
+									people_name = option_li.find_element(By.CLASS_NAME,"b6f5dc85").text  #2nd element in name div
+									people_link = option_li.find_element(By.TAG_NAME,"a").get_attribute("href")
 									people_name_split = people_name.split()
 									jj = 0
 									while(jj < len(people_name_split) and people_name_split[jj].isalpha() == False):
@@ -1029,18 +1037,27 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			full_content =full_content + "\n Link giới thiệu:" + company_about_url
 		if(company_url != ""):
 			driver.switch_to.window(company_window)
-			wrap_section = driver.find_element(By.CLASS_NAME,"org-grid__content-height-enforcer")
-			dds = wrap_section.find_elements(By.TAG_NAME,"dd")
+			# wrap_section = driver.find_element(By.CSS_SELECTOR, "[data-testid='lazy-column']")
+			# wrap_section = driver.find_elements(By.CLASS_NAME,"_72ff4c00")
+			# wrap_section_child1= wrap_section.find_element(By.CLASS_NAME,"ed0b5221") 
+			wrap_section= driver.find_elements(By.CLASS_NAME,"a9ef5c1f")[1]    # 3rd element behind overview
+			dds= wrap_section.find_elements(By.CLASS_NAME,"_6c1ad861")
+			 
+			 
+			# wrap_section = driver.find_element(By.CLASS_NAME,"org-grid__content-height-enforcer")
+			# dds = wrap_section.find_elements(By.TAG_NAME,"dd")
 	
 			index = 0
 			for dd in dds:
 	# Ha cmt
-		#print(dd.text)
+				
 				if(("http" in dd.text) or (".com" in dd.text) or ("www" in dd.text)):
 					website_company = dd.text
 				if("Phone number is" in dd.text):
+					# print(dd.text)
 					phone_company = dd.text.split("Phone number is")[0]
 				index = index + 1
+		# print(website_company)
 		if(country == "Australia"):
 			if (phone_company.startswith('0') or phone_company.startswith("(0")):			
 				phone_company = phone_company.replace('0','+61',1)
