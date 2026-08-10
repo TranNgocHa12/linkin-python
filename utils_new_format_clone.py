@@ -857,7 +857,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 							option_title_div = option_li_title_div.find_element(By.CLASS_NAME,"lt-line-clamp--multi-line")
 							people_title_origin = option_title_div.text
 							people_title = [item.lower() for item in people_title_origin.split()]
-							title_list =["cto","chief technology officer","ceo","chief executive officer","founder","head of technical","project manager","hr","talent acquisition","project owner"]
+							title_list =["cto","chief technology officer","ceo","chief executive officer","founder","head of technical","project manager","talent acquisition","project owner"]
 							for each_title in title_list:
 								if each_title in people_title:
 									profile_click_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__image")
