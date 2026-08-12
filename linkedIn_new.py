@@ -239,7 +239,7 @@ if __name__ == "__main__":
     #                "React Native developer","ReactJS developer","NextJS developer",
     #                "AngularJS developer","VueJS  developer","Django","Golang", "Swift Developer","Python",
     #               "Php developer", "C++","Azure developer"]
-    jobs_names =["Java developer"]  #".Net developer","Java developer" "Thailand","Singapore","United States","United Kingdom"]
+    jobs_names =["iOS developer","Android developer"]  #".Net developer","Java developer" "Thailand","Singapore","United States","United Kingdom"]
     #countries = ["Malaysia","Australia and New Zealand","Germany","European Union", "Thailand","Singapore","United States","United Kingdom"]
     countries = ["Malaysia","Australia and New Zealand","Germany","European Union", "Thailand","Singapore","United States","United Kingdom"]
     geoIDs = ["106808692","91000015","101282230","91000000", "105146118","102454443","103644278","101165590"]
@@ -311,7 +311,7 @@ if __name__ == "__main__":
                 x = random.randint(100,400)
                 time.sleep(x)           
             temp_job_name = job_name
-            home_url = "https://www.linkedin.com/jobs/search-results/?currentJobId=4384208616&keywords=" + job_name + "origin=JOB_SEARCH_PAGE_LOCATION_AUTOCOMPLETE&geoId=" + geoID
+            home_url = "https://www.linkedin.com/jobs/search-results/?currentJobId=4448900504&keywords=" + job_name + "&origin=JOB_SEARCH_PAGE_LOCATION_AUTOCOMPLETE&geoId=" + geoID
             driver.get(home_url)
             time.sleep(5)
             # if (country == "Malaysia"):
@@ -411,14 +411,14 @@ if __name__ == "__main__":
             except:
                 print("error")
                 pass
-            show_result = driver.find_elements(By.CLASS_NAME,"e0cd683d")[-1]    #2nd element of div
+            show_result = driver.find_elements(By.CLASS_NAME,"_4825d1c7")[-1]    #2nd element of div
             element = show_result.find_element(By.TAG_NAME, "a")
             element.click()
             time.sleep(10) 
             # jobs = driver.find_elements(By.CLASS_NAME,"scaffold-layout__list-item")
             # res_list = driver.find_element(By.CSS_SELECTOR, "[data-testid='lazy-column']")             
             # jobs = res_list.find_element(By.CLASS_NAME,"_82c90085")
-            jobs = driver.find_elements(By.CSS_SELECTOR, "[data-testid='lazy-column'] > ._82c90085")
+            jobs = driver.find_elements(By.CSS_SELECTOR, "[data-testid='lazy-column'] > .c4936755")
             print(len(jobs))
             address = ""
             for job in jobs:
