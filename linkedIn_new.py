@@ -239,10 +239,11 @@ if __name__ == "__main__":
     #                "React Native developer","ReactJS developer","NextJS developer",
     #                "AngularJS developer","VueJS  developer","Django","Golang", "Swift Developer","Python",
     #               "Php developer", "C++","Azure developer"]
-    jobs_names =["iOS developer","Android developer"]  #".Net developer","Java developer" "Thailand","Singapore","United States","United Kingdom"]
+    jobs_names =["NextJS developer"]  #".Net developer","Java developer" "Thailand","Singapore","United States","United Kingdom"]
     #countries = ["Malaysia","Australia and New Zealand","Germany","European Union", "Thailand","Singapore","United States","United Kingdom"]
     countries = ["Malaysia","Australia and New Zealand","Germany","European Union", "Thailand","Singapore","United States","United Kingdom"]
-    geoIDs = ["106808692","91000015","101282230","91000000", "105146118","102454443","103644278","101165590"]
+    # geoIDs = ["106808692","91000015","101282230","91000000", "105146118","102454443","103644278","101165590"]
+    geoIDs = ["103644278","101165590"]
     company_excluded = " NOT Crossing Hurdles, NOT Hire Feed, NOT Quik Hire Staffing, NOT BJAK, NOT micro1, NOT Hired, NOT Jobs Ai, NOT Kira"
     # jobfile = open("job.txt", "r")
     # jobs_names = jobfile.read().split(",")
@@ -311,7 +312,7 @@ if __name__ == "__main__":
                 x = random.randint(100,400)
                 time.sleep(x)           
             temp_job_name = job_name
-            home_url = "https://www.linkedin.com/jobs/search-results/?currentJobId=4448900504&keywords=" + job_name + "&origin=JOB_SEARCH_PAGE_LOCATION_AUTOCOMPLETE&geoId=" + geoID
+            home_url = "https://www.linkedin.com/jobs/search-results/?keywords=" + job_name + "&origin=JOB_SEARCH_PAGE_LOCATION_AUTOCOMPLETE&geoId=" + geoID
             driver.get(home_url)
             time.sleep(5)
             # if (country == "Malaysia"):
@@ -401,7 +402,8 @@ if __name__ == "__main__":
                 pass
             access_token = login_crm()
             filter_gr  = driver.find_element(By.ID,"JobsSearchFilters")
-            date_filter = driver.find_element(By.CSS_SELECTOR, "[componentkey='SearchResults_filter_pill_JobSearchFacetSuggestionType_TIME_POSTED']")
+            date_filter = driver.find_element(By.CSS_SELECTOR, '[aria-label="Filter by Date posted"]')
+            # date_filter = driver.find_element(By.CSS_SELECTOR, "[componentkey='SearchResults_filter_pill_JobSearchFacetSuggestionType_TIME_POSTED']")
             date_filter.click()
             time.sleep(5)
             try:
@@ -411,18 +413,20 @@ if __name__ == "__main__":
             except:
                 print("error")
                 pass
-            show_result = driver.find_elements(By.CLASS_NAME,"_4825d1c7")[-1]    #2nd element of div
+            show_result = driver.find_elements(By.CLASS_NAME,"_9dd4e4ae")[-1]    #2nd element of div
             element = show_result.find_element(By.TAG_NAME, "a")
             element.click()
             time.sleep(10) 
             # jobs = driver.find_elements(By.CLASS_NAME,"scaffold-layout__list-item")
             # res_list = driver.find_element(By.CSS_SELECTOR, "[data-testid='lazy-column']")             
             # jobs = res_list.find_element(By.CLASS_NAME,"_82c90085")
-            jobs = driver.find_elements(By.CSS_SELECTOR, "[data-testid='lazy-column'] > .c4936755")
+            jobs = driver.find_elements(By.CSS_SELECTOR, "[data-testid='lazy-column'] > .c4842257")
             print(len(jobs))
             address = ""
             for job in jobs:
                 job_state = ""
+                job_state_1 = ""
+                job_state_2 = ""
                 match_job = "Yes"
                 lead_id = ""
                 try:
@@ -440,13 +444,15 @@ if __name__ == "__main__":
                     # lead_id = check_lead_existed(job_title,company_name )
                     # if(lead_id != ""):
                     #     continue
-                    job_state = job_ele_1.find_elements(By.TAG_NAME, "p")[3].text      
-                    if(job_state == "Viewed"):
+                    job_state = job_ele_1.find_elements(By.TAG_NAME, "p")[2].text  
+                    job_state_1 = job_ele_1.find_elements(By.TAG_NAME, "p")[3].text      
+                    job_state_2 = job_ele_1.find_elements(By.TAG_NAME, "p")[4].text 
+                    if("Viewed" in job_state or "Viewed" in job_state_1 or "Viewed" in job_state_2):
                         continue
                 except Exception as errorConnect: #spelling error making this code not work as expected
                     print("\nConnect error :", errorConnect)  
                     pass
-                if(job_state == "Viewed"):
+                if("Viewed" in job_state or "Viewed" in job_state_1 or "Viewed" in job_state_2):
                 #if(lead_id != ""):
                     continue
                 for key_fail in keys_fail:
@@ -466,6 +472,7 @@ if __name__ == "__main__":
                         # y = random.randint(30,60)
                         # time.sleep(y)
                         job_id_container = job_ele_1.get_attribute("componentkey")
+                        # job_id_container = job_ele_1.find_element(By.XPATH, "..").find_element(By.XPATH, "..").get_attribute("componentkey")
                         job_id = job_id_container.split("-")[-1]
                         get_job_detail(driver,job_id,access_token,countries[country_count], countries[country_count],linkedin_acc)
                         job_count = job_count + 1
