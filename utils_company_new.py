@@ -630,7 +630,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			if("job poster" in parent_element_text.lower()):
 				hirer_link = element_href
 	try:
-		current_job_title = driver.find_element(By.CLASS_NAME,"_397709b2").text  # 2nd element		
+		current_job_title = driver.find_element(By.CLASS_NAME,"_062c687f").text  # 2nd element		
 		#current_job_title = driver.find_element(By.CLASS_NAME,"job-details-jobs-unified-top-card__job-title").text    
 		job_detail_text = driver.find_element(By.CSS_SELECTOR, "[data-testid='expandable-text-box']").text
 		#job_detail_text = driver.find_element(By.CLASS_NAME,"jobs-box__html-content").text
@@ -700,7 +700,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			driver.switch_to.window(root_window)
 			return 
 		else:
-			company_name = driver.find_element(By.CLASS_NAME,"_397709b2").text
+			company_name = driver.find_element(By.CLASS_NAME,"_062c687f").text
 			# company_name = driver.find_element(By.CLASS_NAME,"org-top-card-summary__title").text
 			company_info = check_company_existed(company_name)
 			company_id = company_info["data"]
@@ -733,7 +733,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			z = random.randint(5,10)	
 			time.sleep(z)
 			#hirer_name = driver.find_element(By.CSS_SELECTOR, '[data-view-name="profile-top-card-verified-badge"]').text
-			hirer_name = driver.find_element(By.CLASS_NAME,"_397709b2").text	   # 2nd element	
+			hirer_name = driver.find_element(By.CLASS_NAME,"_062c687f").text	   # 2nd element	
 			lead_info = check_lead_existed(current_job_title, company_name, hirer_name)
 			hirer_name_split = hirer_name.split()
 			ii = 0
@@ -744,7 +744,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			contact_info = check_contact(hirer_name)
 			if(contact_info is None or contact_info["data"] is None or contact_info["data"] == ""):				 
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_57d0a9cc").get_attribute("href")    #2nd element
+				contact_info_link = driver.find_element(By.CLASS_NAME,"_78a7f1d2").get_attribute("href")    #2nd element
 				driver.get(contact_info_link)
 				time.sleep(3)
 				contact_info_list = driver.find_elements(By.CLASS_NAME,"pv-contact-info__contact-type")
@@ -805,7 +805,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 					return	
 				elif contact_info["des"] is not None:
 					request_note_str =contact_info["des"] + "\nconnect by Huong" 
-				contact_info_link = driver.find_element(By.CLASS_NAME,"_57d0a9cc").get_attribute("href")  #2nd element
+				contact_info_link = driver.find_element(By.CLASS_NAME,"_78a7f1d2").get_attribute("href")  #2nd element
 				#contact_info_link = driver.find_element(By.ID,"top-card-text-details-contact-info").get_attribute("href")
 				driver.get(contact_info_link)
 				time.sleep(3)
@@ -846,9 +846,8 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 				driver.get(company_people_url)
 				people_name_first_name = ""
 				time.sleep(8)
-				people_div = driver.find_elements(By.CLASS_NAME,"d5c8208b")[1]   #first element
+				people_div = driver.find_elements(By.CLASS_NAME,"cf14891c")[1]   #first element
 				people_div_content_li = people_div.find_elements(By.CSS_SELECTOR, "[role='listitem']")
-				print(len(people_div_content_li))
 				# people_div = driver.find_element(By.CLASS_NAME,"org-people-profile-card__card-spacing")				
 				# people_div_content = people_div.find_element(By.CLASS_NAME,"scaffold-finite-scroll__content")
 				# people_div_content_ul = people_div_content.find_element(By.TAG_NAME,"ul")
@@ -860,7 +859,8 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 							# option_li_title_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__subtitle")
 							# option_title_div = option_li_title_div.find_element(By.CLASS_NAME,"lt-line-clamp--multi-line")
 							# people_title_origin = option_title_div.text
-							people_title_origin = option_li.find_element(By.CLASS_NAME,"_0253d248").text  #3rd element in p tag in title
+							people_title_origin = option_li.find_element(By.CLASS_NAME,"eb3cd1ce").text  #3rd element in p tag in title
+							# print(people_title_origin)
 							people_title = [item.lower() for item in people_title_origin.split()]
 							title_list =["cto","chief technology officer","ceo","chief executive officer","founder","head of technical","project manager","talent acquisition","project owner"]
 							for each_title in title_list:
@@ -870,8 +870,9 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 									# hirer_link = people_link
 									# people_name_div = option_li.find_element(By.CLASS_NAME,"artdeco-entity-lockup__title")
 									# people_name_line = people_name_div.find_element(By.CLASS_NAME,"lt-line-clamp--single-line")
-									# people_name = people_name_line.text
-									people_name = option_li.find_element(By.CLASS_NAME,"_29b90daf").text  #2nd element in name div
+									# people_name = people_name_line.text  _250821df
+									people_name = option_li.find_element(By.CLASS_NAME,"_6005398a").text  #3nd element in name p
+									# print(people_name)
 									people_link = option_li.find_element(By.TAG_NAME,"a").get_attribute("href")
 									hirer_link = people_link
 									people_name_split = people_name.split()
@@ -886,6 +887,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 										driver.get(people_link)
 										request_note_str = request_note_str + "connect by Huong" 
 										mess_sent = "message sent by AdminAccount"
+										print("add people")
 										add_contact(access_token = access_token,title = people_title_origin , name = people_name, email = "", phone = "", des = request_note_str, link = people_link, account_id= company_id)
 										people_info = check_contact(people_name)
 										contact_id = people_info["data"]
@@ -903,6 +905,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 											breaker = True
 											request_note_str = people_info["des"] + "\nconnect by Huong" 
 											mess_sent = "message sent by AdminAccount"
+											print("edit people")
 											edit_contact(access_token = access_token, contact_id = people_info["data"] , title = people_title_origin, name = people_name, email = "", phone= "", des = request_note_str, link = people_link, account_id= company_id)
 											break
 						except Exception as error:
@@ -948,7 +951,7 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 				driver.switch_to.window(root_window)
 				return 
 		pass
-
+	print("here3")
 	if(country == "Australia"):
 		if (hirer_phone.startswith('0') or hirer_phone.startswith("(0")):			
 			hirer_phone = hirer_phone.replace('0','+61',1)
@@ -1040,8 +1043,8 @@ def get_job_detail(driver,job_id,access_token,address, country, linkedin_acc):
 			# wrap_section = driver.find_element(By.CSS_SELECTOR, "[data-testid='lazy-column']")
 			# wrap_section = driver.find_elements(By.CLASS_NAME,"_72ff4c00")
 			# wrap_section_child1= wrap_section.find_element(By.CLASS_NAME,"ed0b5221") 
-			wrap_section= driver.find_elements(By.CLASS_NAME,"dfbad84c")[1]    # 3rd element behind overview
-			dds= wrap_section.find_elements(By.CLASS_NAME,"_6ebd00b4")
+			wrap_section= driver.find_elements(By.CLASS_NAME,"e57c10a5")[1]    # 3rd element behind overview
+			dds= wrap_section.find_elements(By.CLASS_NAME,"dee433f2")
 			 
 			 
 			# wrap_section = driver.find_element(By.CLASS_NAME,"org-grid__content-height-enforcer")
@@ -1253,11 +1256,11 @@ def enter_ids_on_lk_signin(driver, email, password):
 	# usernameInputElement.send_keys(email)
 	# passwordInputElement = driver.find_elements(By.ID, "«r4»")[-1]
 	# passwordInputElement.send_keys(password)
-	usernameInputElement = driver.find_elements(By.ID, "«Refvukejj35655j6»")[-1]
+	usernameInputElement = driver.find_elements(By.ID, "«Refvukejj356d5j6»")[-1]
 	usernameInputElement.send_keys(email)
-	passwordInputElement = driver.find_elements(By.ID, "«R2nvukejj35655j6»")[-1]
+	passwordInputElement = driver.find_elements(By.ID, "«R2nvukejj356d5j6»")[-1]
 	passwordInputElement.send_keys(password)
-	submitElement = driver.find_elements(By.CLASS_NAME,"_8808f51b")[-1]
+	submitElement = driver.find_elements(By.CLASS_NAME,"_5846d991")[-1]
  
 	# usernameInputElement = driver.find_element(By.ID, "session_key")
 	# # print(len(usernameInputElement))
