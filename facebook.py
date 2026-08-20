@@ -27,12 +27,13 @@ import pandas as pd
 import random
 from selenium.common.exceptions import NoSuchElementException
 from eld import LanguageDetector
+from selenium.webdriver.common.action_chains import ActionChains
 # from fake_useragent import UserAgent
 
 from utils_fb import (
     get_lk_credentials,
     enter_ids_on_lk_signin,
-    get_job_detail,
+    add_job_facebook,
     login_crm
 )
 
@@ -248,18 +249,32 @@ if __name__ == "__main__":
     # driver = webdriver.Firefox(service = cService, options=fire_options)
     
     driver.maximize_window()
-    driver.get("https://www.facebook.com/groups/vieclamitnetwork/")
-    time.sleep(120)
+    driver.get("https://www.facebook.com/")
+    time.sleep(5)
+    print("Inputting the credentials...")
+    lk_credentials = get_lk_credentials(LK_CREDENTIALS_PATH)
+    enter_ids_on_lk_signin(driver, lk_credentials["email"], lk_credentials["password"])
+    time.sleep(5)
+    driver.get("https://www.facebook.com/groups/java.dotnet.itjob")
+    time.sleep(30)
+    access_token = login_crm()
     fb_feed = driver.find_element(By.CSS_SELECTOR, "[role='feed']")
-    fb_feed_list = fb_feed.find_elements(By.CSS_SELECTOR,"[role='article']")
-    # fb_feed_list= fb_feed.find_elements(By.CLASS_NAME,"x1a2a7pz")
-    
+    fb_feed_list = driver.find_elements(By.CSS_SELECTOR, "[role='feed'] > .x1n2onr6")
+    # fb_feed_list = fb_feed.find_elements(By.CSS_SELECTOR,"[role='article']")
+    # fb_feed_list= fb_feed.find_elements(By.CLASS_NAME,"x1n2onr6 ")
+    # driver.execute_script("window.scrollTo(0, 200)")
     print(len(fb_feed_list))
-    time.sleep(20)
+    for fb_feed_item in fb_feed_list:
+        # profile_link = fb_feed_item.find_element(By.CSS_SELECTOR,"[role='link']")
+        profile = fb_feed_item.find_element(By.TAG_NAME,"a")
+        profile_link = profile.get_attribute("href")
+        profile_name = fb_feed_item.find_element(By.CSS_SELECTOR, "[data-ad-rendering-role='profile_name']").find_element(By.CSS_SELECTOR,"[role='link']").find_elements(By.TAG_NAME,"span")[-1].text
+        add_job_facebook(profile_link,access_token, profile_name)
+    time.sleep(10)
+    # driver.execute_script("arguments[0].scrollIntoView();", fb_feed_item)
+    actions = ActionChains(driver)
+    actions.move_to_element(fb_feed_item).perform()
     
-    # print("Inputting the credentials...")
-    # lk_credentials = get_lk_credentials(LK_CREDENTIALS_PATH)
-    # enter_ids_on_lk_signin(driver, lk_credentials["email"], lk_credentials["password"])
 
     # if "checkpoint/challenge" in driver.current_url:
     #     print(
